@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로봇 디바이스 임대관리 시스템 · 3조 포트폴리오</title>
+  <meta name="description" content="웨어러블 로봇 디바이스 임대관리 시스템 — Spring Boot 기반 사내 운영 시스템. OWASP 보안 대응, 11라운드 설계 개선, MQTT 실시간 데이터 연동." />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+
+  <!-- ===================== Header ===================== -->
+  <header class="site-header" id="siteHeader">
+    <div class="hd-inner">
+      <a href="#top" class="logo">RMS<span>.portfolio</span></a>
+      <nav class="hd-nav" id="hdNav">
+        <a href="#about">소개</a>
+        <a href="#tech">기술스택</a>
+        <a href="#features">기능</a>
+        <a href="#security">보안</a>
+        <a href="#history">개선이력</a>
+        <a href="#team">팀</a>
+        <a href="#resources">자료</a>
+      </nav>
+      <div class="hd-right">
+        <a class="btn btn-ghost btn-sm" id="navGithub" href="#" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn-primary btn-sm" id="navDemo" href="#" target="_blank" rel="noopener">라이브 데모</a>
+      </div>
+      <button class="hd-burger" id="hdBurger" aria-label="menu" data-icon="menu" data-size="24"></button>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ===================== Hero ===================== -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-inner reveal">
+        <span class="badge badge-blue hero-eyebrow">한양대학교 ERICA · 백엔드 프레임워크 프로그래밍 · 3조</span>
+        <h1>로봇 디바이스<br />임대관리 시스템</h1>
+        <p class="hero-sub">
+          웨어러블 로봇 디바이스의 <b>입고 · 임대 · A/S · 반납</b> 전 생애주기를 관리하고,
+          MQTT로 착용자의 생체 · 응급 데이터를 실시간 수신하는 <b>사내 운영 시스템</b>입니다.
+          11라운드에 걸친 설계 개선과 OWASP 기반 보안 대응을 거쳤습니다.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" id="heroDemo" href="#" target="_blank" rel="noopener"><span class="bi" data-icon="launch"></span> 라이브 데모 열기</a>
+          <a class="btn btn-ghost btn-lg" id="heroGithub" href="#" target="_blank" rel="noopener"><span class="bi" data-icon="code"></span> 소스 코드 보기</a>
+        </div>
+        <div class="hero-stats" id="heroStats"><!-- JS --></div>
+      </div>
+    </section>
+
+    <!-- ===================== About ===================== -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="kicker">About</span>
+          <h2>프로젝트 개요</h2>
+          <p>단일 운영 센터 내부에서 디바이스 자산과 임대 흐름, 그리고 착용자 안전 데이터를 한곳에서 관리합니다.</p>
+        </div>
+        <div class="about-grid">
+          <div class="card card-pad reveal">
+            <div class="about-ic" data-icon="box"></div>
+            <h3>디바이스 생애주기 관리</h3>
+            <p>입고 → 임대대기 → 임대중 → A/S → 반납/폐기까지 상태 전이 규칙(<code>validateStatusTransition</code>)으로 잘못된 전이를 차단합니다.</p>
+          </div>
+          <div class="card card-pad reveal">
+            <div class="about-ic" data-icon="signal"></div>
+            <h3>실시간 데이터 수신</h3>
+            <p>DrValue MQTT 라이브러리로 착용자의 <b>생체 리포트</b>와 <b>응급 신호</b>를 자동 수신해 DB에 적재합니다.</p>
+          </div>
+          <div class="card card-pad reveal">
+            <div class="about-ic" data-icon="shield"></div>
+            <h3>운영 보안</h3>
+            <p>JWT 인증, 역할 기반 접근통제(RBAC), 로그인 잠금, 시크릿 외부화 등 OWASP Top 10을 코드 레벨에서 대응했습니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Tech Stack ===================== -->
+    <section class="section section-alt" id="tech">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="kicker">Tech Stack</span>
+          <h2>사용 기술</h2>
+          <p>Spring Boot 4 + JPA 기반 백엔드, Thymeleaf 서버사이드 렌더링, 원격 MySQL.</p>
+        </div>
+        <div class="tech-grid" id="techGrid"><!-- JS --></div>
+      </div>
+    </section>
+
+    <!-- ===================== Features ===================== -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="kicker">Features</span>
+          <h2>주요 기능 · 13개 화면</h2>
+          <p>운영자가 매일 쓰는 운영 화면 8개와, 관리자 전용 관리 화면 5개로 구성됩니다.</p>
+        </div>
+        <div class="feat-cols">
+          <div class="feat-col reveal">
+            <div class="feat-col-head"><span class="badge badge-blue">운영 화면</span><b>8</b></div>
+            <ul class="feat-list" id="featOps"><!-- JS --></ul>
+          </div>
+          <div class="feat-col reveal">
+            <div class="feat-col-head"><span class="badge badge-amber">관리 화면 · ADMIN 전용</span><b>5</b></div>
+            <ul class="feat-list" id="featAdmin"><!-- JS --></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Security ===================== -->
+    <section class="section section-alt" id="security">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="kicker">Security</span>
+          <h2>보안 적용</h2>
+          <p>코드 레벨 OWASP Top 10 대응 + 외부 점검 도구 3종으로 검증했습니다.</p>
+        </div>
+
+        <div class="owasp-grid" id="owaspGrid"><!-- JS --></div>
+
+        <h3 class="sub-h reveal">외부 보안 점검 결과</h3>
+        <div class="scan-grid" id="scanGrid"><!-- JS --></div>
+      </div>
+    </section>
+
+    <!-- ===================== History / Maintenance ===================== -->
+    <section class="section" id="history">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="kicker">Maintenance</span>
+          <h2>설계 개선 이력 · 11 라운드</h2>
+          <p>교수님 · 조교 · AI 교차검증 피드백을 라운드 단위로 반영했습니다. 시스템에 <code>설계이력</code> 화면으로도 기록되어 있습니다.</p>
+        </div>
+        <div class="timeline" id="timeline"><!-- JS --></div>
+      </div>
+    </section>
+
+    <!-- ===================== Team ===================== -->
+    <section class="section section-alt" id="team">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="kicker">Team · 역할분담</span>
+          <h2>팀 3조</h2>
+          <p>도메인별로 폴더를 나눠 담당 영역을 분리하고, 공통 구조는 PM이 관리했습니다.</p>
+        </div>
+        <div class="team-grid" id="teamGrid"><!-- JS --></div>
+      </div>
+    </section>
+
+    <!-- ===================== Resources ===================== -->
+    <section class="section" id="resources">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="kicker">Resources</span>
+          <h2>발표자료 · 문서 · 배포</h2>
+          <p>발표 PPT, 설계 문서(Notion), 요구사항명세서, 라이브 배포까지 한곳에 모았습니다.</p>
+        </div>
+        <div class="res-grid" id="resGrid"><!-- JS --></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="site-footer">
+    <div class="container ft-inner">
+      <div>
+        <div class="logo">RMS<span>.portfolio</span></div>
+        <p class="ft-desc">로봇 디바이스 임대관리 시스템 — 한양대학교 ERICA · 백엔드 프레임워크 프로그래밍 3조</p>
+      </div>
+      <div class="ft-links" id="ftLinks"><!-- JS --></div>
+    </div>
+    <div class="ft-bottom">© 2026 RMS Team 3. Built with Spring Boot · MySQL · MQTT.</div>
+  </footer>
+
+  <div class="proto-badge">RMS Portfolio</div>
+  <script src="./js/main.js"></script>
+</body>
+</html>
