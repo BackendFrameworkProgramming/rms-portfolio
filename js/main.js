@@ -6,17 +6,17 @@ const CONFIG = {
   // --- 외부 링크 (여기에 실제 URL 채우기) ---
   links: {
     github:  "https://github.com/BackendFrameworkProgramming/RentalManagementSystem",
-    demo:    "https://rms.o-r.kr:8083",         // 라이브 배포 (admin / admin123)
     notion:  "",                                 // ← DB·API 설계 노션 URL 넣기
   },
-  // --- 자료 파일 (assets/ 폴더에 넣고 경로 지정. 비우면 "준비중"으로 표시) ---
+  // --- 자료 파일 ---
   resources: [
-    { icon: "presentation", bg: "#eaefff", title: "주제 발표",       desc: "프로젝트 기획 · 주제 선정",       href: "" }, // ex) "assets/ppt/01-주제발표.pdf"
-    { icon: "presentation", bg: "#eaefff", title: "중간 발표",       desc: "설계 · 중간 진행 보고",          href: "" },
-    { icon: "presentation", bg: "#eaefff", title: "최종 발표",       desc: "완성 시스템 · 보안 · 회고",      href: "" },
-    { icon: "database",     bg: "#f3f6ff", title: "DB · API 설계",  desc: "테이블/엔드포인트 명세 (Notion)", href: "" }, // CONFIG.links.notion 자동 사용
-    { icon: "file",         bg: "#fdf3e7", title: "요구사항 명세서", desc: "기능 요구사항 정의 (PDF)",        href: "" }, // ex) "assets/요구사항명세서.pdf"
-    { icon: "launch",       bg: "#e9f7ef", title: "라이브 데모",     desc: "실제 배포 운영 화면",            href: "" }, // CONFIG.links.demo 자동 사용
+    { icon: "presentation", bg: "#eaefff", title: "설계 발표 (1차)",  desc: "DB 설계 · 주제 (PPTX)",          href: "assets/docs/design-1st.pptx" },
+    { icon: "presentation", bg: "#eaefff", title: "중간 발표 (2차)",  desc: "설계 · 중간 진행 (PPTX)",        href: "assets/docs/midterm-2nd.pptx" },
+    { icon: "presentation", bg: "#eaefff", title: "최종 발표",        desc: "완성 시스템 · 보안 · 회고 (PPTX)", href: "assets/docs/final.pptx" },
+    { icon: "database",     bg: "#f3f6ff", title: "테이블 명세서",     desc: "DB 테이블 설계 (PDF)",            href: "assets/docs/table-spec.pdf" },
+    { icon: "code",         bg: "#f3f6ff", title: "API 명세서",       desc: "REST 엔드포인트 명세 (PDF)",      href: "assets/docs/api-spec.pdf" },
+    { icon: "file",         bg: "#fdf3e7", title: "요구사항 · 화면설계", desc: "요구사항/화면 설계 (PDF)",        href: "assets/docs/requirements.pdf" },
+    { icon: "code",         bg: "#f3f6ff", title: "GitHub 소스코드",   desc: "전체 소스 저장소",               href: "https://github.com/BackendFrameworkProgramming/RentalManagementSystem" },
   ],
 };
 
@@ -58,7 +58,7 @@ function icon(name, size = 22) {
 const HERO_STATS = [
   { num: "13", lbl: "운영·관리 화면" },
   { num: "70+", lbl: "REST API" },
-  { num: "11", lbl: "설계 개선 라운드" },
+  { num: "5", lbl: "보안 점검 도구" },
   { num: "4", lbl: "팀원" },
 ];
 
@@ -80,7 +80,8 @@ const FEAT_ADMIN = [
 
 const OWASP = [
   { tag: "A01 · 접근통제", t: "역할 기반 접근통제 (RBAC)", d: "ADMIN / STAFF / 지점관리자 3단계. 관리 화면은 ADMIN 전용, 데이터 스코핑으로 IDOR 방어." },
-  { tag: "A02 · 암호화 실패", t: "시크릿 외부화", d: "DB 비밀번호 · JWT 시크릿을 환경변수로 분리. 비밀번호는 BCrypt 단방향 해시." },
+  { tag: "A02 · 암호화 실패", t: "시크릿 env 전용", d: "DB 비밀번호 · JWT 시크릿을 환경변수 전용으로 분리(평문 fallback 제거, 미설정 시 기동 차단). 비밀번호는 BCrypt 단방향 해시." },
+  { tag: "A03 · 인젝션 / 경로", t: "로그 인젝션 · 경로 탈출 방어", d: "로그 출력 개행 제거(log injection), 업로드 파일명 basename 정규화로 Path Traversal 차단, 확장자 화이트리스트." },
   { tag: "A05 · 보안 설정 오류", t: "설정 노출 차단", d: "운영 시 SQL/스택트레이스 노출 차단(show-sql off). 환경변수로만 토글." },
   { tag: "A07 · 인증 실패", t: "JWT 인증 + 로그인 잠금", d: "Access/Refresh + HttpOnly 쿠키. 5회 실패 시 5분 일시 잠금(LoginAttemptService)." },
   { tag: "헤더", t: "보안 응답 헤더 6종", d: "HSTS · CSP · Referrer-Policy · Permissions-Policy · X-Content-Type-Options 등 적용." },
@@ -91,20 +92,19 @@ const SCANS = [
   { grade: "A+", svg: null,    cls: "g-a",    tool: "CryptCheck.fr", t: "TLS 등급", who: "전민석" },
   { grade: "A",  svg: null,    cls: "g-a",    tool: "securityheaders.com", t: "보안 헤더 등급", who: "정은혜" },
   { grade: null, svg: "check", cls: "g-pass", tool: "Nikto", t: "웹 취약점 스캔", who: "김규민" },
+  { grade: null, svg: "check", cls: "g-pass", tool: "GitHub CodeQL", t: "정적 분석 (CI 자동)", who: "윤태웅" },
+  { grade: null, svg: "check", cls: "g-pass", tool: "Dependabot", t: "의존성 취약점 (CI 자동)", who: "윤태웅" },
 ];
 
-const HISTORY = [
-  { r: 1,  date: "3/28", src: "교수님",         t: "초기 DB 설계 착수", d: "화면설계서 8개 분석 → 테이블 15개 · API 51개 초안." },
-  { r: 2,  date: "4/4",  src: "조교",           t: "공통코드 분리 + Soft Delete", d: "상태값을 code_group/code_detail로 관리, 전 테이블 논리 삭제 도입." },
-  { r: 3,  date: "4/11", src: "교수님·타조",    t: "모델-버전 분리 + 상태 전이 규칙", d: "model/model_version 분리, 7개 상태 전이 검증 추가." },
-  { r: 4,  date: "4/18", src: "교수님·조교",    t: "RESTful URL + 공통 검색/페이징", d: "URL 규칙 통일, CommonSearchRequest · Pagination 도입." },
-  { r: 5,  date: "4/25", src: "교수님",         t: "API 실명제 + 집계 분리 + BaseEntity", d: "담당자 명시, 집계 전용 API 분리, AOP 공통 필드 관리." },
-  { r: 6,  date: "5/3",  src: "AI 교차검증",    t: "Repository 쿼리 최적화", d: "findAll+stream 제거, 캐스팅 버그 수정, 트랜잭션 롤백 지침." },
-  { r: 7,  date: "5/9",  src: "조교·수업",      t: "MQTT 모듈 + 원격 DB 전환", d: "DrValue로 생체/응급 자동 수신, 로컬→원격 MySQL 공유." },
-  { r: 8,  date: "5/12", src: "자체 테스트",    t: "미구현 API 보완 + 화면 13개 이슈", d: "상태변경 API, 코드그룹/상세 분리, 화면 버그 수정." },
-  { r: 9,  date: "5/23", src: "교수님 중간발표", t: "AOP 로깅 + JWT 인증 + RBAC", d: "API 실행시간 로깅, JWT 인증, 역할 기반 접근제어 도입." },
-  { r: 10, date: "5/30", src: "보안 수업·AI",   t: "OWASP Top 10 대응 + Java 21", d: "시크릿 외부화, 로그인 잠금, 설정 노출 차단, 21 업그레이드." },
-  { r: 11, date: "6/12", src: "교수님 최종",    t: "역할 모델 정립 + 전 도메인 DTO/Enum", d: "유저 역할 스코핑, Map→DTO, status/role Enum화, N+1(@EntityGraph)." },
+const SCREENS = [
+  { src: "assets/screens/screen1.png", t: "디바이스 현황",       d: "지점별 디바이스 상태·재고 관리" },
+  { src: "assets/screens/screen2.png", t: "디바이스 임대 현황",   d: "임대 신청 · 사용중 · 반납 흐름" },
+  { src: "assets/screens/screen3.png", t: "사용 생체 정보",       d: "걸음·호흡·사용시간 + 응급 기록" },
+  { src: "assets/screens/screen4.png", t: "디바이스 A/S 관리",    d: "접수 · 진행 · 완료 이력" },
+  { src: "assets/screens/screen5.png", t: "지점 관리",           d: "지점 · 주담당자 관리" },
+  { src: "assets/screens/screen6.png", t: "센터 정보",           d: "센터 기본정보 · 직인/로고" },
+  { src: "assets/screens/screen7.png", t: "부서 / 팀",           d: "조직 구조 관리 (부서·팀)" },
+  { src: "assets/screens/screen8.png", t: "센터 담당직원",       d: "직원 · 근무형태 · 근무상태" },
 ];
 
 const TEAM = [
@@ -128,8 +128,8 @@ function fillDataIcons() {
 }
 
 function applyLinks() {
-  const { github, demo } = CONFIG.links;
-  [["#navGithub", github], ["#heroGithub", github], ["#navDemo", demo], ["#heroDemo", demo]].forEach(([sel, href]) => {
+  const { github } = CONFIG.links;
+  [["#navGithub", github], ["#heroGithub", github]].forEach(([sel, href]) => {
     const node = $(sel); if (node && href) node.href = href;
   });
 }
@@ -159,12 +159,22 @@ function renderScans() {
     el(`<div class="scan-card reveal"><div class="grade ${s.cls}">${s.svg ? icon(s.svg, 30) : s.grade}</div><h4>${s.t}</h4><div class="tool">${s.tool}</div><div class="who"><span class="badge badge-gray">${s.who}</span></div></div>`)));
 }
 
-function renderHistory() {
-  $("#timeline").append(...HISTORY.map((h, i) =>
-    el(`<div class="tl-item reveal ${i === HISTORY.length - 1 ? "last" : ""}">
-          <div class="tl-top"><span class="tl-round">라운드 ${h.r}</span><span class="tl-date">${h.date}</span><span class="badge badge-blue">${h.src}</span></div>
-          <h4>${h.t}</h4><p>${h.d}</p>
-        </div>`)));
+function renderScreens() {
+  $("#screenGrid").append(...SCREENS.map(s =>
+    el(`<figure class="shot reveal">
+          <img src="${s.src}" alt="${s.t}" loading="lazy">
+          <figcaption><b>${s.t}</b><span>${s.d}</span></figcaption>
+        </figure>`)));
+  // 클릭 확대(라이트박스)
+  const overlay = el(`<div class="lightbox"><img alt=""></div>`);
+  document.body.appendChild(overlay);
+  const big = overlay.querySelector("img");
+  document.querySelectorAll("#screenGrid img").forEach(im => {
+    im.addEventListener("click", () => { big.src = im.src; overlay.classList.add("open"); document.body.style.overflow = "hidden"; });
+  });
+  const close = () => { overlay.classList.remove("open"); document.body.style.overflow = ""; };
+  overlay.addEventListener("click", close);
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
 }
 
 function renderTeam() {
@@ -181,7 +191,6 @@ function renderResources() {
   CONFIG.resources.forEach(r => {
     let href = r.href;
     if (!href && (r.title.includes("Notion") || r.title.includes("DB"))) href = CONFIG.links.notion;
-    if (!href && r.title.includes("데모")) href = CONFIG.links.demo;
     const disabled = !href;
     grid.append(el(
       `<a class="res-card reveal ${disabled ? "disabled" : ""}" href="${href || "#"}" ${disabled ? "" : 'target="_blank" rel="noopener"'}>
@@ -193,8 +202,8 @@ function renderResources() {
 }
 
 function renderFooterLinks() {
-  const { github, demo, notion } = CONFIG.links;
-  const items = [["GitHub", github], ["라이브 데모", demo], ["설계 문서(Notion)", notion]].filter(([, h]) => h);
+  const { github, notion } = CONFIG.links;
+  const items = [["GitHub", github], ["설계 문서(Notion)", notion]].filter(([, h]) => h);
   $("#ftLinks").append(...items.map(([t, h]) =>
     el(`<a href="${h}" target="_blank" rel="noopener">${t} ${icon("external", 14)}</a>`)));
 }
@@ -222,7 +231,7 @@ function initScrollSpy() {
       }
     });
   }, { rootMargin: "-45% 0px -50% 0px" });
-  ["about", "tech", "features", "security", "history", "team", "resources"].forEach(id => {
+  ["about", "tech", "features", "security", "screens", "team", "resources"].forEach(id => {
     const s = document.getElementById(id); if (s) obs.observe(s);
   });
 }
@@ -237,6 +246,6 @@ function initReveal() {
 /* ---------- boot ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   renderHeroStats(); renderTech(); renderFeatures(); renderOwasp();
-  renderScans(); renderHistory(); renderTeam(); renderResources(); renderFooterLinks();
+  renderScans(); renderScreens(); renderTeam(); renderResources(); renderFooterLinks();
   fillDataIcons(); applyLinks(); initHeader(); initScrollSpy(); initReveal();
 });

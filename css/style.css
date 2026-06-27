@@ -262,3 +262,49 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .
   .hero { padding: 60px 0 56px; }
   .section { padding: 60px 0; }
 }
+
+/* =========================================================
+   Screens gallery + lightbox
+   ========================================================= */
+.shot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.shot {
+  margin: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: .16s;
+}
+.shot:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+.shot img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  background: #f0f0f0;
+  cursor: zoom-in;
+  border-bottom: 1px solid var(--border);
+}
+.shot figcaption { padding: 12px 14px; }
+.shot figcaption b { display: block; font-size: .95rem; color: var(--text); }
+.shot figcaption span { display: block; font-size: .82rem; color: var(--muted); margin-top: 2px; }
+
+.lightbox {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.88);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; cursor: zoom-out;
+  opacity: 0; visibility: hidden; transition: opacity .2s;
+}
+.lightbox.open { opacity: 1; visibility: visible; }
+.lightbox img { max-width: 95%; max-height: 95%; object-fit: contain; border-radius: 6px; box-shadow: 0 10px 50px rgba(0,0,0,.5); }
+
+@media (max-width: 560px) {
+  .shot-grid { grid-template-columns: 1fr; }
+}
